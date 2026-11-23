@@ -1,0 +1,167 @@
+BookHive — Book Borrowing Management System
+
+A modern, responsive web application prototype for managing a library's book borrowing system. Inspired by [OpenLibrary](https://openlibrary.org), BookHive provides a clean, card-based UI with meaningful data visualization and a full simulated authentication flow.
+
+> **Course:** IMS566 — Advanced Web Design Development and Content Management  
+> **Assignment:** Individual Project 
+> **Author:** SITI NUR KHADIJAH BINTI MASNAWI
+> **Matric No:** 2026113195
+> **Submission:** Week 9
+
+
+## Project Description
+
+BookHive is a small-scale library management web app that allows librarians (or members) to:
+
+- Log in securely (simulated authentication with localStorage)
+- View key library metrics on a dashboard with charts
+- Browse the book catalog with search and category filters
+- Borrow available books (max 7 days)
+- Track borrowing records with status filtering
+
+The design follows OpenLibrary's aesthetic: clean, card-driven, and content-first, with Bootstrap 5 for responsiveness across desktop and mobile.
+
+
+## Features
+
+### 1. Authentication (Login / Register)
+- Hardcoded credential simulation (no backend required)
+- Register new users — stored in `localStorage`
+- Clear error feedback:
+  - Empty fields
+  - Invalid credentials
+  - Password too short (< 6 chars)
+  - Password mismatch
+  - Duplicate username
+- Session guard: protected pages redirect to login if not authenticated
+- "Remember Me" toggle (localStorage vs sessionStorage)
+
+### 2. Navigation Menu
+- Sticky Bootstrap 5 navbar with active-link highlighting
+- Collapsible hamburger menu on mobile
+- Consistent across all pages (Dashboard, Books, Borrowings, Contact)
+- Logout button + logged-in username display
+
+### 3. Dashboard
+- 4 stat cards: Total Books, Borrowed, Available, Overdue
+- **Bar chart** — monthly borrowing trend (last 6 months)
+- **Doughnut chart** — book category distribution
+- Slideshow background with soft overlay
+
+### 4. Data View Pages (2+ pages)
+- **Books page** — responsive card grid with live search, category filters, and pagination (8 per page)
+- **Borrowings page** — table with 4 filter tabs (All / Active / Overdue / Returned) and auto-overdue detection
+
+### 5. Data Visualisation
+- Chart.js 4.x (bar + doughnut)
+- Meaningful data: borrow trends and category splits — not random
+
+### 6. Content Management
+- Structured page metadata (`<title>`, `<meta name="description">`)
+- Semantic HTML5 elements (`<main>`, `<nav>`, `<footer>`)
+- Consistent heading hierarchy, badge labels, status colors
+
+### 7. Footer
+- Copyright, OpenLibrary attribution, documentation link
+- Info modals for Terms, Privacy, and About
+- Responsive flex layout
+
+---
+
+## How to Test Login
+
+### Default Credentials
+| Field | Value |
+|-------|-------|
+| Username | `admin` |
+| Password | `admin123` |
+
+### Steps:
+1. Open the live site
+2. Enter the credentials above
+3. Click **Log In**
+4. You will be redirected to the Dashboard
+
+### Test Error Handling
+- Submit empty form → "Please enter both username and password."
+- Wrong credentials → "Invalid username or password."
+- Register with password < 6 chars → validation error
+- Register with mismatched passwords → "Passwords do not match."
+- Register duplicate username → "Username already taken."
+
+### Register a New Account
+1. Click **"Register now"**
+2. Enter a username (e.g. `Name`) and password (min 6 chars)
+3. Confirm password → click **Create Account**
+4. Auto-login and redirect to Dashboard
+
+### Test Borrowing
+1. Go to **Books** page
+2. Click **Borrow** on any book with a green "Available" badge
+3. Fill in member name and due date (max 7 days)
+4. Confirm → success alert appears
+5. Go to **Borrowings** page → your new record appears
+
+---
+
+## 🛠 Frameworks & Libraries Used
+
+| Library | Version | Purpose |
+|---------|---------|---------|
+| [Bootstrap](https://getbootstrap.com/) | 5.3.3 | Layout, components, responsiveness |
+| [Bootstrap Icons](https://icons.getbootstrap.com/) | 1.11.3 | Iconography |
+| [Chart.js](https://www.chartjs.org/) | 4.4.1 | Dashboard visualizations |
+| Vanilla JavaScript (ES6) | — | Logic, DOM manipulation, localStorage |
+
+**No build tools, no npm, no framework dependencies** — pure static files served via GitHub Pages.
+
+---
+
+## Project Structure
+
+bookhive/
+├── index.html # Login / Register page
+├── dashboard.html # Dashboard with charts
+├── books.html # Book catalog with pagination
+├── borrowings.html # Borrowing records table
+├── contact.html # Contact Us page
+├── README.md # Documentation
+├── css/
+│ └── style.css # Global stylesheet (soft purple aesthetic)
+├── js/
+│ ├── auth.js # Login / register logic
+│ ├── books.js # Catalog, search, pagination, borrow modal
+│ ├── borrowings.js # Records table, overdue detection, return
+│ ├── common.js # Session, navbar, footer, shared utilities
+│ └── dashboard.js # Dashboard stats + Chart.js
+└── images/
+├── slide1.jpg ... slide3.jpg # Background slideshow
+└── [book covers].jpg # Book cover images
+
+---
+
+## Deployment (GitHub Pages)
+
+1. Push all files to a GitHub repository
+2. Go to **Settings → Pages**
+3. Set **Source** to `main` branch, root folder
+4. Your site will be live at `https://<username>.github.io/<repo>/`
+5. Ensure `index.html` is at the root (it will be the login page)
+
+---
+
+## Tested On
+
+- **Google Chrome** (primary — as per guideline Section 8)
+- Firefox, Edge (cross-browser compatible)
+- Mobile responsive at 375px, 768px, 1024px widths
+
+---
+
+## License
+
+This project is for academic purposes under IMS566 coursework. Book covers and images belong to their respective owners.
+
+---
+
+**© 2026 BookHive. All rights reserved.**

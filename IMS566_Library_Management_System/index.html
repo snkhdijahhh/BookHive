@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="BookHive — A modern book borrowing management system." />
+  <title>Login | BookHive Library</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  
+  <style>
+    /* CSS KHAS UNTUK PAGE LOGIN INI SAHAJA */
+    body.auth-body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background-color: #1a1a2e; /* Fallback color */
+    }
+
+    /* BACKGROUND SLIDESHOW */
+    .auth-bg-slideshow {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: -2;
+    }
+    .auth-bg-slideshow .carousel-item img {
+      width: 100%; height: 100vh;
+      object-fit: cover;
+      object-position: center;
+    }
+    
+    /* OVERLAY GELAP SEDIKIT SUPAYA TEKS NAMPAK */
+    .auth-bg-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(20, 15, 40, 0.5); /* Warna gelap kebiruan */
+      z-index: -1;
+    }
+
+    /* KAD KACA (GLASSMORPHISM) */
+    .glass-card {
+      background: rgba(40, 35, 70, 0.65); /* Ungu gelap separa telus */
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+      color: white;
+      width: 100%;
+      max-width: 420px;
+      padding: 2rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* STYLING INPUT */
+    .glass-input-group {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s;
+    }
+    .glass-input-group:focus-within {
+      border-color: rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .glass-input-group .input-group-text {
+      background: transparent;
+      border: none;
+      color: #a0a0b0;
+      padding-left: 1rem;
+      padding-right: 0.5rem;
+    }
+    .glass-input-group .form-control {
+      background: transparent;
+      border: none;
+      color: white;
+      box-shadow: none;
+      padding: 0.75rem 0.5rem;
+    }
+    .glass-input-group .form-control::placeholder {
+      color: #a0a0b0;
+    }
+
+    /* BUTANG LOGIN PUTIH */
+    .btn-glass-submit {
+      background: white;
+      color: #2c2c54;
+      border: none;
+      border-radius: 50px;
+      font-weight: 600;
+      padding: 0.8rem;
+      transition: all 0.2s;
+    }
+    .btn-glass-submit:hover {
+      background: #f0f0f0;
+      transform: scale(1.02);
+    }
+
+    /* LINK & CHECKBOX KECIL */
+    .small-link {
+      color: #c0c0d0;
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+    .small-link:hover { color: white; }
+    
+    .form-check-input {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    .form-check-input:checked {
+      background-color: #8a70ff; /* Warna ungu */
+      border-color: #8a70ff;
+    }
+
+    /* TUKAR / TOGGLE FORM */
+    .form-section { display: none; }
+    .form-section.active { display: block; animation: fadeIn 0.4s ease; }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* FOOTER BAWAH (KIRI & KANAN) */
+    .auth-footer {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      width: 100%;
+      padding: 0 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.85rem;
+      pointer-events: none; /* Elak halang klik pada background */
+    }
+
+    /* Responsif untuk skrin kecil (Mobile) */
+    @media (max-width: 480px) {
+      .glass-card {
+        padding: 1.5rem;
+        margin: 0 15px; 
+      }
+      .auth-footer {
+        flex-direction: column;
+        gap: 10px;
+        padding: 0 15px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body class="auth-body">
+
+  <!-- BACKGROUND SLIDESHOW -->
+  <div id="authCarousel" class="carousel slide carousel-fade auth-bg-slideshow" data-bs-ride="carousel" data-bs-interval="4000">
+    <div class="carousel-inner h-100">
+      <div class="carousel-item active h-100">
+        <img src="images/slide1.jpg" alt="Background 1" onerror="this.src='https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80';">
+      </div>
+      <div class="carousel-item h-100">
+        <img src="images/slide2.jpg" alt="Background 2" onerror="this.src='https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80';">
+      </div>
+      <div class="carousel-item h-100">
+        <img src="images/slide3.jpg" alt="Background 3" onerror="this.src='https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80';">
+      </div>
+    </div>
+  </div>
+  
+  <!-- LAPISAN GELAP -->
+  <div class="auth-bg-overlay"></div>
+
+  <!-- KANDUNGAN TENGAH -->
+  <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    
+    <!-- KOTAK KACA (GLASS CARD) -->
+    <div class="glass-card shadow-lg">
+      
+      <!-- LOGO ICON ATAS -->
+      <div class="text-center mb-4 mt-2">
+        <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 50px; height: 50px; border: 2px dashed rgba(255,255,255,0.4);">
+          <i class="bi bi-book text-white fs-4"></i>
+        </div>
+        <h3 class="fw-normal mb-2" id="authTitle">Welcome back!</h3>
+        <p class="text-white-50 small mb-0" id="authSubtitle" style="font-size: 0.85rem;">Sign in to access your library, borrow books, and manage your account.</p>
+      </div>
+
+      <!-- ================= LOGIN FORM ================= -->
+      <form id="loginForm" class="form-section active" novalidate>
+        
+        <div class="mb-3">
+          <label class="form-label text-white-50 small mb-1" style="font-size: 0.8rem;">Username</label>
+          <div class="glass-input-group">
+            <input type="text" class="form-control form-control-sm" id="loginUser" placeholder="Enter your username" required />
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label text-white-50 small mb-1" style="font-size: 0.8rem;">Password</label>
+          <div class="glass-input-group">
+            <input type="password" class="form-control form-control-sm" id="loginPass" placeholder="••••••••" required />
+            <span class="input-group-text" style="cursor: pointer;" onclick="togglePassword('loginPass', 'eyeIconLogin')">
+              <i class="bi bi-eye-slash text-white-50" id="eyeIconLogin"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="rememberMe">
+            <label class="form-check-label text-white-50 small" for="rememberMe" style="font-size: 0.8rem;">Remember me</label>
+          </div>
+          <a href="#" class="small-link" style="font-size: 0.8rem;">Forgot password?</a>
+        </div>
+
+        <div id="loginError" class="alert alert-danger py-2 d-none small" role="alert" style="font-size: 0.8rem;"></div>
+        
+        <button type="submit" class="btn btn-glass-submit w-100 mb-4">Log In</button>
+
+        <!-- BAHAGIAN BAWAH (TUKAR REGISTER) -->
+        <p class="text-center text-white-50 small mb-0" style="font-size: 0.85rem;">
+          Don't have an account? <a href="#" id="showRegister" class="text-white text-decoration-none fw-semibold ms-1">Register now</a>
+        </p>
+      </form>
+
+      <!-- ================= REGISTER FORM ================= -->
+      <form id="registerForm" class="form-section" novalidate>
+        
+        <div class="mb-3">
+          <label class="form-label text-white-50 small mb-1" style="font-size: 0.8rem;">Username</label>
+          <div class="glass-input-group">
+            <input type="text" class="form-control form-control-sm" id="regUser" placeholder="Choose a username" required />
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label text-white-50 small mb-1" style="font-size: 0.8rem;">Password</label>
+          <div class="glass-input-group">
+            <input type="password" class="form-control form-control-sm" id="regPass" placeholder="Min. 6 characters" required />
+            <span class="input-group-text" style="cursor: pointer;" onclick="togglePassword('regPass', 'eyeIconReg')">
+              <i class="bi bi-eye-slash text-white-50" id="eyeIconReg"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label text-white-50 small mb-1" style="font-size: 0.8rem;">Confirm Password</label>
+          <div class="glass-input-group">
+            <input type="password" class="form-control form-control-sm" id="regConfirm" placeholder="••••••••" required />
+            <span class="input-group-text" style="cursor: pointer;" onclick="togglePassword('regConfirm', 'eyeIconConfirm')">
+              <i class="bi bi-eye-slash text-white-50" id="eyeIconConfirm"></i>
+            </span>
+          </div>
+        </div>
+
+        <div id="regError" class="alert alert-danger py-2 d-none small" role="alert" style="font-size: 0.8rem;"></div>
+        
+        <button type="submit" class="btn btn-glass-submit w-100 mb-4">Create Account</button>
+
+        <p class="text-center text-white-50 small mb-0" style="font-size: 0.85rem;">
+          Already registered? <a href="#" id="showLogin" class="text-white text-decoration-none fw-semibold ms-1">Sign In</a>
+        </p>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- FOOTER BAWAH -->
+  <div class="auth-footer">
+    <div class="fw-bold" style="font-size: 1rem; color: rgba(255,255,255,0.8);">
+      <i class="bi bi-book-half"></i> BookHive
+    </div>
+    <div>
+      Copyright &copy; 2026 BookHive. All rights reserved.
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
